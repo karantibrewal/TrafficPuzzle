@@ -25,7 +25,6 @@ class Car(Vehicle):
 		return [self.loc1, self.loc2]
 
 	
-
 ## This class describes a Truck
 class Truck(Vehicle):
 

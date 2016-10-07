@@ -33,5 +33,4 @@ class TrafficBoard:
 	# @return empty board (all zeros)
 	@staticmethod
 	def createEmptyMatrix(n):
-
-		return [[0 for x in range(n)] for y in range(n)]
+		return [[0 for x in range(n)] for y in range(n)] 

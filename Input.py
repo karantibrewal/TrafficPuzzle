@@ -15,8 +15,8 @@ def stdInputInitState():
 	TrafficBoard.endGate = (r,c)
 	TrafficBoard.numCars = input("How many cars? (excluding SPECIAL car)")
 	TrafficBoard.numTrucks = input("How many trucks?")
-	cars = []
-	trucks = []
+	cars = {}
+	trucks = {}
 	carName = 'A'
 
 	for i in range(TrafficBoard.numCars): 
@@ -24,8 +24,9 @@ def stdInputInitState():
 		c1 = input("Enter #1 column coordinate for (front) car #" + str(i) + " :")
 		r2 = input("Enter #2 row coordinate for (front) car #" + str(i) + " :")
 		c2 = input("Enter #2 column coordinate for (front) car #" + str(i) + " :")
-		cars.append(Car((r1,c1), (r2, c2), carName))
+		cars[carName] = Car((r1,c1), (r2, c2), carName)
 		carName = chr(ord(carName)+1)
+
 
 
 	for i in range(TrafficBoard.numTrucks): 
@@ -35,25 +36,27 @@ def stdInputInitState():
 		c2 = input("Enter #2 column coordinate for (front) truck #" + str(i) + " :")
 		r3 = input("Enter #3 row coordinate for (front) truck #" + str(i) + " :")
 		c3 = input("Enter #3 column coordinate for (front) truck #" + str(i) + " :")
-		trucks.append(Truck((r1,c1), (r2, c2), (r3, c3), carName))
+		trucks[carName] = Truck((r1,c1), (r2, c2), (r3, c3), carName)
 		carName = chr(ord(carName)+1)
 
 	r1 = input("Enter #1 row coordinate for RED car #" + str(i) + " :")
 	c1 = input("Enter #1 column coordinate for RED car #" + str(i) + " :")
 	r2 = input("Enter #2 row coordinate for (front) RED #" + str(i) + " :")
 	c2 = input("Enter #2 column coordinate for (front) RED #" + str(i) + " :")
-	car.append(Car((r1,c1), (r2, c2), "**"))
+	cars["**"] = Car((r1,c1), (r2, c2), "**")
 
 	board = TrafficBoard.createEmptyMatrix(TrafficBoard.n);
-	for car in cars: 
+	for key in cars: 
+		car = cars[key]
 		for loc in car.getLocation():
 			board[loc[0]][loc[1]] = car.carName
 		carName = chr(ord(carName)+1)
-	for truck in trucks: 
+	for key in trucks: 
+		truck = trucks[key]
 		for loc in truck.getLocation():
 			board[loc[0]][loc[1]] = truck.carName
-
-	return TrafficBoard(board, cars, trucks)
+	cars.update(trucks)
+	return TrafficBoard(board, cars)
 
 ## Function to read in board lay out for the initial state
 ## @param file to read from
@@ -67,8 +70,8 @@ def FileInputInitState(filename):
 	TrafficBoard.endGate = (r,c)
 	TrafficBoard.numCars = int(file.readline())
 	TrafficBoard.numTrucks = int(file.readline())
-	cars = []
-	trucks = []
+	cars = {}
+	trucks = {}
 	carName = 'A'
 
 	for i in range(TrafficBoard.numCars): 
@@ -76,7 +79,7 @@ def FileInputInitState(filename):
 		c1 = int(file.readline())
 		r2 = int(file.readline())
 		c2 = int(file.readline())
-		cars.append(Car((r1,c1), (r2, c2), carName))
+		cars[carName] = Car((r1,c1), (r2, c2), carName)
 		carName = chr(ord(carName)+1)
 
 
@@ -87,27 +90,27 @@ def FileInputInitState(filename):
 		c2 = int(file.readline())
 		r3 = int(file.readline())
 		c3 = int(file.readline())
-		trucks.append(Truck((r1,c1), (r2, c2), (r3, c3), carName))
+		trucks[carName] = Truck((r1,c1), (r2, c2), (r3, c3), carName)
 		carName = chr(ord(carName)+1)
 
 	r1 = int(file.readline())
 	c1 = int(file.readline())
 	r2 = int(file.readline())
 	c2 = int(file.readline())
-	cars.append(Car((r1,c1), (r2, c2), "**"))
+	cars["**"] = Car((r1,c1), (r2, c2), "**")
+
 
 	board = TrafficBoard.createEmptyMatrix(TrafficBoard.n);
-	for car in cars: 
+	for key in cars: 
+		car = cars[key]
 		for loc in car.getLocation():
 			board[loc[0]][loc[1]] = car.carName
 		carName = chr(ord(carName)+1)
-	for truck in trucks: 
+	for key in trucks: 
+		truck = trucks[key]
 		for loc in truck.getLocation():
 			board[loc[0]][loc[1]] = truck.carName
+	cars.update(trucks)
+	return TrafficBoard(board, cars)
 
-	return TrafficBoard(board, cars, trucks)
-
-
-
-print FileInputInitState("initTest")
 

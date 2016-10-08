@@ -19,14 +19,16 @@ class TrafficBoard:
 
 	# CONSTRUCTOR
 	# @param boardConfig the initial board condiguration for this TrafficBoard
-	def __init__(self, boardConfig, cars, trucks):
+	def __init__(self, boardConfig, vehicles):
 		self.board = boardConfig
-		self.vehicles = cars + trucks
-
+		self.vehicles = vehicles
 	# returns string representation of the board
 	def __str__(self):
 		string = '\n'.join(['\t'.join(x) for x in [[str(a) for a in b] for b in self.board]])		
 		return string
+
+	def getVehicle(self, carName):
+		return self.vehicles[carName]
 
 	# creates an empty board of all zeros
 	# @param n dimension of square board

@@ -63,7 +63,6 @@ def stdInputInitState():
 ## @return a TrafficBoard representing the initial state
 def FileInputInitState(filename): 
 	file = open(filename, 'r')
-
 	TrafficBoard.n = int(file.readline())
 	r = int(file.readline())	
 	c = int(file.readline())

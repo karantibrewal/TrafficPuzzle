@@ -54,14 +54,10 @@ class Node:
 
 	# implements a comparator for nodes
 	def __cmp__(self, other):
-		if self.pathCost < other.pathCost:
+		if self.f < other.f:
 			return -1
+		elif self.f == other.f:
+			return cmp(-1 * self.action.n, -1 * other.action.n)
 		else:
 			return 1
-
-
-from Input import FileInputInitState
-# Test 1
-board1 =  FileInputInitState("initTest")
-print board1
 

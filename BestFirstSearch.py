@@ -8,6 +8,7 @@ from copy import copy
 from Vehicles import Car
 from Vehicles import Truck
 from TrafficBoard import TrafficBoard
+from Node import Node
 
 class BestFirstSearch: 
 	## CONSTRUCTOR
@@ -35,6 +36,11 @@ class BestFirstSearch:
 		q.put(self.init)
 		while not q.empty(): 
 			thisNode = q.get()
+			if not thisNode.action is None and \
+			thisNode.action.car.carName == "**" and\
+			self.isGoal(self, thisNode.board.board, thisNode.board.endGate): 
+			# goal state is reachable only if action moves red car
+				return thisNode
 			possibleActions = thisNode.getPossibleActions()
 			thisBoard = thisNode.board
 			thisVehicles = thisBoard.vehicles
@@ -53,17 +59,14 @@ class BestFirstSearch:
 															  action.car.carName)
 					newBoard = TrafficBoard(matrix, newVehicles)
 					newNode = Node(newBoard, thisNode, action, thisNode.pathCost + 1, self.h)
-					if action.car.carName == "**" and \
-					self.isGoal(self,matrix, thisBoard.endGate): # goal can only be reached
-																 # when the red car is moved.
-
-						return newNode
+					
 					q.put(newNode)
-					addVisitedNode(newNode, visitedNodes)
+			addVisitedNode(thisNode, visitedNodes)
+			#addVisitedNode(thisNode, visitedNodes)
 				
 					
 
-		return False
+		return None
 
 # Adds the node to the set of visited nodes
 # @return void
@@ -73,20 +76,3 @@ def addVisitedNode(node, visitedNodes):
 # @return has the given node been visited? 
 def isVisited(board, visitedNodes): 
 	return tuple([tuple(x) for x in board]) in visitedNodes
-
-
-from Input import FileInputInitState
-from Heuristics import h1
-from Node import Node
-# Test 1
-board1 =  FileInputInitState("test3")
-node = Node(board1, None, None, 0, h1)
-search = BestFirstSearch(node, h1)
-print "************"
-print board1
-node = search.execute()
-while (not node.parent is None):
-	print node.action
-	node = node.parent
-
-print search.totalCount
